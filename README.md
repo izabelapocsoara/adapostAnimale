@@ -199,3 +199,64 @@ SELECT * FROM OrarPreluari
 | 2      | 2         | 2024-09-01   |
 | 3      | 3         | 2024-08-20   |
 | 4      | 4         | 2024-09-15   |
+
+## Operatiuni SQL
+
+#### DELETE - ștergem un adăpost:
+```sql
+DELETE FROM Adaposturi WHERE AdapostID = 4;
+```
+#### UPDATE - facem update la numele unui animăluț:
+```sql
+UPDATE Animalute
+SET Nume = 'RockyYY'
+WHERE AnimalutID = 1;
+```
+#### WHERE - filtrare cu WHERE pentru a vedea câte pisici sunt:
+```sql
+SELECT * FROM Animalute
+WHERE Specie = 'Pisica';
+```
+#### LIKE - filtrare care returnează toate animăluțele a căror nume începe cu litera T:
+```sql
+SELECT * FROM Animalute
+WHERE Nume LIKE 'T%';
+```
+#### AND și OR - returnează toate animăluțele de specie pisică și vârsta mai mică de 2 ani, și toți câinii pentru care vârsta este mai mare de 5 ani
+```sql
+SELECT * FROM Animalute
+WHERE (Specie = 'Pisica' AND Varsta < 2)
+OR (Specie = 'Caine' AND Varsta > 5);
+```
+#### LIMIT - afișează doar 5 rânduri din tabela Animaluțe
+```sql
+SELECT * FROM Animalute
+LIMIT 5;
+```
+#### Selectare coloane specifice:
+```sql
+SELECT AnimalutID, Specie, Nume FROM Animalute;
+```
+#### ORDER BY - această interogare aranjează animăluțele în ordine crescătoare după vârstă
+```sql
+SELECT * FROM Animalute
+ORDER BY Varsta ASC;
+```
+## COUNT - această funcție agregată numără câte animăluțe sunt în total:
+```sql
+SELECT COUNT(*) AS TotalAnimalute FROM Animalute;
+```
+## AVG - folosind această funcție agregată calculăm media de vârstă a animăluțelor:
+```sql
+SELECT AVG(Varsta) AS MediaVarstei FROM Animalute;
+```
+## Filtrare pe funcția agregată COUNT folosind GROUP BY și HAVING 
+- GROUP BY grupează înregistrările după ShelterID
+- COUNT(*) calculează numărul de pisici per adăpost
+- HAVING filtrează grupurile pe baza valorii agregate (2 in cazul nostru)
+```sql
+SELECT AdapostID, COUNT(*) AS NumarAnimalute
+FROM Animalute 
+GROUP BY AdapostID
+HAVING COUNT(*) > 2;
+```
