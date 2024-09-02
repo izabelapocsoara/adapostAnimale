@@ -222,13 +222,13 @@ WHERE Specie = 'Pisica';
 SELECT * FROM Animalute
 WHERE Nume LIKE 'T%';
 ```
-#### AND și OR - returnează toate animăluțele de specie pisică și vârsta mai mică de 2 ani, și toți câinii pentru care vârsta este mai mare de 5 ani
+#### AND și OR - returnează toate animăluțele de specie pisică și vârsta mai mică de 2 ani, și toți câinii pentru care vârsta este mai mare de 5 ani:
 ```sql
 SELECT * FROM Animalute
 WHERE (Specie = 'Pisica' AND Varsta < 2)
 OR (Specie = 'Caine' AND Varsta > 5);
 ```
-#### LIMIT - afișează doar 5 rânduri din tabela Animaluțe
+#### LIMIT - afișează doar 5 rânduri din tabela Animaluțe:
 ```sql
 SELECT * FROM Animalute
 LIMIT 5;
@@ -237,20 +237,21 @@ LIMIT 5;
 ```sql
 SELECT AnimalutID, Specie, Nume FROM Animalute;
 ```
-#### ORDER BY - această interogare aranjează animăluțele în ordine crescătoare după vârstă
+#### ORDER BY - această interogare aranjează animăluțele în ordine crescătoare după vârstă:
 ```sql
 SELECT * FROM Animalute
 ORDER BY Varsta ASC;
 ```
-## COUNT - această funcție agregată numără câte animăluțe sunt în total:
+## Funcții agregate și filtrare pe funcții agregate
+#### COUNT - această funcție agregată numără câte animăluțe sunt în total:
 ```sql
 SELECT COUNT(*) AS TotalAnimalute FROM Animalute;
 ```
-## AVG - folosind această funcție agregată calculăm media de vârstă a animăluțelor:
+#### AVG - folosind această funcție agregată calculăm media de vârstă a animăluțelor:
 ```sql
 SELECT AVG(Varsta) AS MediaVarstei FROM Animalute;
 ```
-## Filtrare pe funcția agregată COUNT folosind GROUP BY și HAVING 
+#### Filtrare pe funcția agregată COUNT folosind GROUP BY și HAVING: 
 - GROUP BY grupează înregistrările după ShelterID
 - COUNT(*) calculează numărul de pisici per adăpost
 - HAVING filtrează grupurile pe baza valorii agregate (2 in cazul nostru)
@@ -259,4 +260,41 @@ SELECT AdapostID, COUNT(*) AS NumarAnimalute
 FROM Animalute 
 GROUP BY AdapostID
 HAVING COUNT(*) > 2;
+```
+## JOIN-uri
+#### INNER JOIN între "Animalute" si "Adoptii" - Acest join returnează doar înregistrările în care există o potrivire între tabelele "Animalute" și "Adoptii" pe baza AnimalutID:
+```sql
+SELECT Animalute.AnimalutID, Animalute.Specie, Adoptii.DataAdoptie
+FROM Animalute
+INNER JOIN Adoptii ON Animalute.AnimalutID = Adoptii.AnimalutID;
+```
+#### LEFT JOIN între "Animalute" si "Adaposturi" - acest join returnează toate înregistrările din tabela "Animalute" și înregistrările corespunzatoare din tabela "Adaposturi":
+```sql
+SELECT Animalute.AnimalutID, Animalute.Specie, Adaposturi.NumeAdapost
+FROM Animalute
+LEFT JOIN Adaposturi ON Animalute.AdapostID = Adaposturi.AdapostID;
+```
+#### RIGHT JOIN între "Adoptii" si "Stapani" - acest join returnează toate înregistrările din tabela Stapani si înregistrările corespunzatoare din tabela Adoptii, rezultatul afisat in partea stanga va contine NULL  daca nu exista o potrivire (adica nu exista o potrivire pe baza StapanID):
+```sql
+SELECT Adoptii.AdoptieID, Adoptii.AnimalutID, Stapani.NumeStapan
+FROM Adoptii
+RIGHT JOIN Stapani ON Adoptii.StapanID = Stapani.StapanID;
+```
+#### CROSS JOIN între tabelele "Animalute" si "Adaposturi" - acest join returneaza un produs Cartesian al celor doua tabele, adica, fiecare rand din tabela "Animalute" este combinat cu toate randurile din tabela "Adaposturi"
+```sql
+SELECT Animalute.AnimalutID, Adaposturi.AdapostID
+FROM Animalute
+CROSS JOIN Adaposturi;
+```
+## SUBQUERY - numară câte animăluțe a adoptat fiecare stăpân.
+Subquery-ul '(SELECT StapanID FROM Adoptii)' obține ID-urile stăpânilor care au adoptat animăluțe selectând "StapanID" din tabela "Adoptii", care dă o listă cu ID-urile stăpânilor care au adoptat animaluțe.
+
+Main Query-ul: folosește rezultatul Subquery-ului pentru a lista numele proprietarilor care au fost implicați în cel puțin o adopție selectând "NumeStapan" din tabela "Stapani" pentru acele ID-uri de stăpâni care există în lista obținută de subquery.
+```sql
+SELECT NumeStapan
+FROM Stapani
+WHERE StapanID IN (
+	SELECT StapanID
+    FROM Adoptii
+);
 ```
