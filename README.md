@@ -14,7 +14,7 @@ Baza de date este formată din următoarele tabele:
 ![schema_adapostAnimale](https://github.com/user-attachments/assets/c1e65ce5-c7ff-47fb-8d52-4de1bac286a3)
 
 ## Crearea bazei de date
-Am creat baza de date adapostAnimale:
+Am creat baza de date adapostAnimale și apoi am selectat-o:
 ```sql
 CREATE DATABASE adapostAnimale;
 USE adapostAnimale;
