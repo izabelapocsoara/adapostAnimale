@@ -252,8 +252,8 @@ SELECT COUNT(*) AS TotalAnimalute FROM Animalute;
 SELECT AVG(Varsta) AS MediaVarstei FROM Animalute;
 ```
 #### Filtrare pe funcția agregată COUNT folosind GROUP BY și HAVING: 
-- GROUP BY grupează înregistrările după ShelterID
-- COUNT(*) calculează numărul de pisici per adăpost
+- GROUP BY grupează înregistrările după AdapostID
+- COUNT(*) calculează numărul de animaluțe per adăpost
 - HAVING filtrează grupurile pe baza valorii agregate (2 in cazul nostru)
 ```sql
 SELECT AdapostID, COUNT(*) AS NumarAnimalute
